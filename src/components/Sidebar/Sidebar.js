@@ -3,7 +3,7 @@ import { useLocation, NavLink } from "react-router-dom";
 
 import { Nav } from "react-bootstrap";
 
-function Sidebar({ color, image, routes }) {
+function Sidebar({ color, image, routes, userType }) {
   const location = useLocation();
   const activeRoute = (routeName) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -46,7 +46,10 @@ function Sidebar({ color, image, routes }) {
                   key={key}
                 >
                   <NavLink
-                    to={prop.layout + prop.path}
+                    to={{
+                      pathname: prop.layout + prop.path,
+                      aboutprops: {userType: userType}
+                      }}
                     className="nav-link"
                     activeClassName="active"
                   >

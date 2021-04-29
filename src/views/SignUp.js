@@ -13,49 +13,25 @@ import {
     Col,
   } from "react-bootstrap";
 
-import { login, getAuthStatus } from "../actions/auth.js";
+import { signUp } from "../actions/auth.js";
 
-class Login extends Component{
+class SignUp extends Component{
 
     state = {
+      firstname: "",
+      lastname: "",
+      contactno: "",
       email: "",
       password: "",
-      isLoggedIn: false,
-      userType: null
-    }
-
-    constructor(props) {
-      super(props);
+      isLoggedIn: false
     }
 
     componentDidMount() {
-      // const authStatus =  getAuthStatus()
-      // if(authStatus){
-      //   this.setState({ isLoggedIn: true })
-      // }
-      // else{
-      //   this.setState({ isLoggedIn: false })
-      // }
-      Firebase.auth().onAuthStateChanged(async (user) => {
-        if (user) { 
-          console.log(user.uid)
-          const ref = db.collection('admins').doc(user.uid);
-          const doc = await ref.get();
-          var type = null
-          if (doc.exists) {
-              console.log('admin');
-              type = 'admin'
-          } else {
-              console.log('user');
-              type = 'user'
-          }
-          this.setState({ isLoggedIn: true , userType: type})
-        } 
-        else { 
-          this.setState({ isLoggedIn: false, userType: null })
-        }
+      Firebase.auth().onAuthStateChanged(user => {
+        if (user) { this.setState({ isLoggedIn: true })} 
+        else { this.setState({ isLoggedIn: false })}
       })
-      console.log("user", this.state.isLoggedIn, this.state.userType)
+      console.log("user", this.state.isLoggedIn)
     }
 
     handleChange = e => {
@@ -70,15 +46,14 @@ class Login extends Component{
       console.log(this.state)
 
       var status = false;
-      status = await login(this.state);
+      status = await signUp(this.state);
       console.log(status)
       console.log("user", this.state.isLoggedIn)
       
     };
 
     render(){
-      if (this.state.isLoggedIn && this.state.userType == 'user') return <Redirect to="/user" />;
-      if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin" />;
+      if (this.state.isLoggedIn) return <Redirect to="/user" />;
         return(
     <Container>
         <Row>
@@ -94,7 +69,7 @@ class Login extends Component{
                 ></img>
               </div>
               {/* <Card.Header>
-                <Card.Title as="h4">Login</Card.Title>
+                <Card.Title as="h4">SignUp</Card.Title>
               </Card.Header> */}
               <Card.Body>
               <div className="author">
@@ -103,17 +78,59 @@ class Login extends Component{
                       className="avatar border-gray"
                       src={require("assets/img/wc-logo.png").default}
                     ></img>
-                    <h5 className="title">LOGIN</h5>
+                    <h5 className="title">SIGNUP</h5>
                 </div>
                 <Form>
-                  <Row>
+                <Row>
                     <Col className="pr-1" md="12">
+                      <Form.Group>
+                        <label>First Name</label>
+                        <Form.Control
+                          id="firstname"
+                          defaultValue=""
+                          placeholder="firstname"
+                          type="text"
+                          onChange = {this.handleChange}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                  <Col className="pr-1" md="12">
+                      <Form.Group>
+                        <label>Last Name</label>
+                        <Form.Control
+                          id="lastname"
+                          defaultValue=""
+                          placeholder="lastname"
+                          type="text"
+                          onChange = {this.handleChange}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                  <Col className="pr-1" md="12">
+                      <Form.Group>
+                        <label>Contact Number</label>
+                        <Form.Control
+                          id="lastname"
+                          defaultValue=""
+                          placeholder="+94xxxxxxxxx"
+                          type="text"
+                          onChange = {this.handleChange}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Email</label>
                         <Form.Control
                           id="email"
                           defaultValue=""
-                          placeholder="Email"
+                          placeholder="example@weconnect.com"
                           type="email"
                           onChange = {this.handleChange}
                         ></Form.Control>
@@ -121,13 +138,13 @@ class Login extends Component{
                     </Col>
                   </Row>
                   <Row>
-                    <Col className="pr-1" md="12">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Password</label>
                         <Form.Control
                           id="password"
                           defaultValue=""
-                          placeholder="Password"
+                          placeholder="password"
                           type="password"
                           onChange = {this.handleChange}
                         ></Form.Control>
@@ -139,22 +156,8 @@ class Login extends Component{
                     variant="info"
                     onClick={this.handleSubmit}
                   >
-                    LOGIN
-                  </Button>
-                  {/* <Button
-                    className="btn-fill pull-right"
-                    variant="info"
-                    onClick={() => this.props.history.push("/signup")}
-                  >
                     SIGN UP
-                  </Button> */}
-                  <Row>
-                  <Col className="pr-1" md="12">
-                  <a href="#pablo" onClick={() => this.props.history.push("/signup")}>
-                    Don't have an account? Sign Up
-                  </a>
-                  </Col>
-                  </Row>
+                  </Button>
                   <div className="clearfix"></div>
                 </Form>
               </Card.Body>
@@ -166,4 +169,4 @@ class Login extends Component{
     }
 }
 
-export default Login;
+export default SignUp;

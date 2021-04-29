@@ -12,11 +12,13 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminLayout from "layouts/Admin.js";
 import UserLayout from "layouts/User.js";
 import Login from "views/Login.js";
+import SignUp from "views/SignUp"
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/login" component= {Login} />
+      <Route path="/signup" component= {SignUp} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/user" render={(props) => <UserLayout {...props} />} />
       <Redirect from="/" to="/login" />

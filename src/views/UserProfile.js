@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation} from "react-router-dom"
 
 // react-bootstrap components
 import {
@@ -14,6 +15,9 @@ import {
 } from "react-bootstrap";
 
 function User() {
+  let location = useLocation();
+  console.log("props from user profile", location.aboutprops);
+
   return (
     <>
       <Container fluid>

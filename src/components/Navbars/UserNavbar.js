@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
+import { logout } from "../../actions/auth.js";
 
 import routes from "routes.js";
 
 function Header() {
+
   const location = useLocation();
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
@@ -26,6 +28,19 @@ function Header() {
     }
     return "Brand";
   };
+
+  const handleLogout = async(e) => {
+    e.preventDefault();
+
+    var status = false;
+    status = await logout();
+    console.log(status)
+    console.log("userlogout")
+    // props.history.push("/");
+    
+  };
+
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -103,7 +118,7 @@ function Header() {
               <Nav.Link
                 className="m-0"
                 href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                onClick={handleLogout}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>
