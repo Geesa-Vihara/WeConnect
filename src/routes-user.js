@@ -1,6 +1,7 @@
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
 import Notifications from "views/Notifications.js";
+import Faq from "views/Faq";
 
 const dashboardRoutes = [
   {
@@ -22,6 +23,13 @@ const dashboardRoutes = [
     name: "Chats",
     icon: "nc-icon nc-bell-55",
     component: Notifications,
+    layout: "/user",
+  },
+  {
+    path: "/faq",
+    name: "FAQ",
+    icon: "nc-icon nc-paper-2",
+    component: Faq,
     layout: "/user",
   },
 ];
