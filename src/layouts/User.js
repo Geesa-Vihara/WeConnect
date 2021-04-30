@@ -17,6 +17,7 @@ function User() {
 
   const [isLoggedIn, setLogin] = useState(true);
   const [userType, setUser] = useState(null);
+  const [uid, setUid] = useState(null);
 
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
@@ -61,6 +62,7 @@ function User() {
         }
         setLogin(true);
         setUser(type)
+        setUid(user.uid)
       } 
       else { 
         setLogin(false)
@@ -87,7 +89,7 @@ function User() {
   if (isLoggedIn || userType=='user') return (
     <>
       <div className="wrapper">
-        <Sidebar color={color} image={hasImage ? image : ""} routes={routes} userType={userType}/>
+        <Sidebar color={color} image={hasImage ? image : ""} routes={routes} userType={userType} uid={uid}/>
         <div className="main-panel" ref={mainPanel}>
           <UserNavbar />
           <div className="content">

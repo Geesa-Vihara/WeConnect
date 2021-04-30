@@ -9,12 +9,15 @@ import "./assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+import UserProvider from "./providers/UserProvider"
+
 import AdminLayout from "layouts/Admin.js";
 import UserLayout from "layouts/User.js";
 import Login from "views/Login.js";
 import SignUp from "views/SignUp"
 
 ReactDOM.render(
+  <UserProvider>
   <BrowserRouter>
     <Switch>
       <Route path="/login" component= {Login} />
@@ -23,6 +26,7 @@ ReactDOM.render(
       <Route path="/user" render={(props) => <UserLayout {...props} />} />
       <Redirect from="/" to="/login" />
     </Switch>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </UserProvider>,
   document.getElementById("root")
 );
