@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
+import Profile from "views/Profile"
 import Notifications from "views/Notifications.js";
 import Faq from "views/Faq";
 
@@ -15,7 +16,7 @@ const dashboardRoutes = [
     path: "/user",
     name: "User Profile",
     icon: "nc-icon nc-circle-09",
-    component: UserProfile,
+    component: Profile,
     layout: "/user",
   },
   {

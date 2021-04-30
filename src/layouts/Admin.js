@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import { useLocation, Route, Switch } from "react-router-dom";
+import React, { Component, useState }from "react";
+import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import Firebase, {db, provider} from '../firebase';
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -11,6 +12,10 @@ import routes from "routes.js";
 import sidebarImage from "assets/img/sidebar-6.jpg";
 
 function Admin() {
+
+  const [isLoggedIn, setLogin] = useState(true);
+  const [userType, setUser] = useState(null);
+
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
   const [hasImage, setHasImage] = React.useState(true);
@@ -32,19 +37,45 @@ function Admin() {
     });
   };
   React.useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainPanel.current.scrollTop = 0;
-    if (
-      window.innerWidth < 993 &&
-      document.documentElement.className.indexOf("nav-open") !== -1
-    ) {
-      document.documentElement.classList.toggle("nav-open");
-      var element = document.getElementById("bodyClick");
-      element.parentNode.removeChild(element);
+    Firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) { 
+        const ref = db.collection('admins').doc(user.uid);
+        const doc = await ref.get();
+        var type = null
+        if (doc.exists) {
+            console.log('type=admin');
+            type = 'admin'
+        } else {
+            console.log('type=user');
+            type = 'user'
+        }
+        setLogin(true);
+        setUser(type)
+      } 
+      else { 
+        setLogin(false)
+        setUser(null)
+      }
+    })
+    console.log("user", isLoggedIn)
+
+    if(isLoggedIn && userType == 'admin') {
+      document.documentElement.scrollTop = 0;
+      document.scrollingElement.scrollTop = 0;
+      mainPanel.current.scrollTop = 0;
+      if (
+        window.innerWidth < 993 &&
+        document.documentElement.className.indexOf("nav-open") !== -1
+      ) {
+        document.documentElement.classList.toggle("nav-open");
+        var element = document.getElementById("bodyClick");
+        element.parentNode.removeChild(element);
+      }
     }
+
   }, [location]);
-  return (
+
+  if (isLoggedIn || userType=='admin') return (
     <>
       <div className="wrapper">
         <Sidebar color={color} image={hasImage ? image : ""} routes={routes} />
@@ -59,6 +90,7 @@ function Admin() {
       <Chatbot />
     </>
   );
+  return <Redirect to="/login" />;
 }
 
 export default Admin;

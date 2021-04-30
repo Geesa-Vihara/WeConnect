@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useLocation} from "react-router-dom"
+import Firebase, {db, provider} from '../firebase';
+import { UserContext } from "../providers/UserProvider";
 
 // react-bootstrap components
 import {
@@ -15,10 +17,34 @@ import {
 } from "react-bootstrap";
 
 function User() {
+
   let location = useLocation();
   console.log("props from user profile", location.aboutprops);
 
-  return (
+  const user = useContext(UserContext);
+  console.log("context", user)
+
+  const [userData, setUserData] = useState(null);
+
+  React.useEffect(async () => {
+    // let userType = location.aboutprops.userType
+    // let uid = location.aboutprops.uid
+    console.log("use effect")
+    if(user.uid){
+        const ref = db.collection(user.userType+'s').doc(user.uid);
+        const doc = await ref.get();
+        let userData = doc.data();
+        setUserData(userData)
+        console.log(userData)
+    }
+    else{
+        console.log("no uid")
+    }
+    
+
+  }, [location]);
+
+  if(userData) return (
     <>
       <Container fluid>
         <Row>
@@ -30,45 +56,11 @@ function User() {
               <Card.Body>
                 <Form>
                   <Row>
-                    <Col className="pr-1" md="5">
-                      <Form.Group>
-                        <label>Company (disabled)</label>
-                        <Form.Control
-                          defaultValue="Creative Code Inc."
-                          disabled
-                          placeholder="Company"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="px-1" md="3">
-                      <Form.Group>
-                        <label>Username</label>
-                        <Form.Control
-                          defaultValue="michael23"
-                          placeholder="Username"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="pl-1" md="4">
-                      <Form.Group>
-                        <label htmlFor="exampleInputEmail1">
-                          Email address
-                        </label>
-                        <Form.Control
-                          placeholder="Email"
-                          type="email"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
                     <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>First Name</label>
                         <Form.Control
-                          defaultValue="Mike"
+                          defaultValue={userData.firstname}
                           placeholder="Company"
                           type="text"
                         ></Form.Control>
@@ -78,20 +70,8 @@ function User() {
                       <Form.Group>
                         <label>Last Name</label>
                         <Form.Control
-                          defaultValue="Andrew"
+                          defaultValue={userData.lastname}
                           placeholder="Last Name"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <Form.Group>
-                        <label>Address</label>
-                        <Form.Control
-                          defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                          placeholder="Home Address"
                           type="text"
                         ></Form.Control>
                       </Form.Group>
@@ -100,7 +80,7 @@ function User() {
                   <Row>
                     <Col className="pr-1" md="4">
                       <Form.Group>
-                        <label>City</label>
+                        <label>Contact Number</label>
                         <Form.Control
                           defaultValue="Mike"
                           placeholder="City"
@@ -108,30 +88,11 @@ function User() {
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="px-1" md="4">
-                      <Form.Group>
-                        <label>Country</label>
-                        <Form.Control
-                          defaultValue="Andrew"
-                          placeholder="Country"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="pl-1" md="4">
-                      <Form.Group>
-                        <label>Postal Code</label>
-                        <Form.Control
-                          placeholder="ZIP Code"
-                          type="number"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
                   </Row>
                   <Row>
                     <Col md="12">
                       <Form.Group>
-                        <label>About Me</label>
+                        <label>Vaccination Details</label>
                         <Form.Control
                           cols="80"
                           defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
@@ -174,9 +135,9 @@ function User() {
                       className="avatar border-gray"
                       src={require("assets/img/faces/face-3.jpg").default}
                     ></img>
-                    <h5 className="title">Mike Andrew</h5>
+                    <h5 className="title">{userData.firstname + ' ' + userData.lastname}</h5>
                   </a>
-                  <p className="description">michael24</p>
+                  <p className="description">{userData.email}</p>
                 </div>
                 <p className="description text-center">
                   "Lamborghini Mercy <br></br>
@@ -217,6 +178,7 @@ function User() {
       </Container>
     </>
   );
+  return (<div></div>)
 }
 
 export default User;
