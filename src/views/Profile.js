@@ -28,7 +28,13 @@ function User() {
 
   const [userData, setUserData] = useState(null);
   const [defaultUserData, setDefaultUserData] = useState(null);
-
+  const [formErrors, setFormErrors] = useState({
+    firstname: null,
+    lastname: null,
+    contactno: null,
+    district:null,
+  })
+  const [formValid, setFormValid] = useState(null)
   
   React.useEffect(async () => {
     // let userType = location.aboutprops.userType
@@ -53,8 +59,51 @@ function User() {
 
   const updateProfile = async (e) => {
     e.preventDefault();
-    await db.collection(user.userType+'s').doc(user.uid).set(userData);
-    history.push('/'+user.userType+'/user')
+    let valid = validateForm()
+    console.log('errors', formErrors)
+    console.log('validate', valid)
+
+    if(valid){
+      console.log('valid form')
+      await db.collection(user.userType+'s').doc(user.uid).set(userData);
+      history.push('/'+user.userType+'/user')
+    }
+    else{
+      console.log('invalid form')
+    }
+  }
+
+  const validateField = (fieldName, value) => {
+    let fieldValidationErrors = formErrors;
+    let vauleValid = false;
+  
+    switch(fieldName) {
+      case 'contactno':
+        vauleValid = value.match(/^[+]94[0-9]{9}$/i);
+        fieldValidationErrors.contactno = vauleValid ? null : ' invalid contact number (expected format : +94XXXXXXXXX)';
+        break;
+      default:
+        vauleValid = value.length >= 1;
+        fieldValidationErrors[fieldName] = vauleValid ? null : ' required field';
+        break;
+    }
+    setFormErrors(fieldValidationErrors)
+  }
+  
+  const validateForm = () => {
+    let fieldValidationErrors = formErrors;
+    let formValid = true;
+   
+    for (var key in fieldValidationErrors) {
+      if (fieldValidationErrors[key] !== null){
+        formValid = false;
+        console.log('not valid error', key)
+      }
+    }
+
+    setFormValid(formValid)
+
+    return formValid
   }
 
   const resetData = async (e) => {
@@ -83,22 +132,30 @@ function User() {
                       <Form.Group>
                         <label>First Name</label>
                         <Form.Control
+                          id="firstname"
                           defaultValue={defaultUserData.firstname}
                           placeholder="firstname"
                           type="text"
-                          onChange = {e => setUserData({ ...userData, firstname: e.target.value })}
+                          onChange = {(e) => {setUserData({ ...userData, firstname: e.target.value }); validateField(e.target.id, e.target.value)}}
                         ></Form.Control>
+                        <Form.Text className="text-danger">
+                          {(formValid == false) ? formErrors.firstname : null}
+                        </Form.Text>
                       </Form.Group>
                     </Col>
                     <Col className="pl-1" md="6">
                       <Form.Group>
                         <label>Last Name</label>
                         <Form.Control
+                          id="lastname"
                           defaultValue={userData.lastname}
                           placeholder="lastname"
                           type="text"
-                          onChange = {e => setUserData({ ...userData, lastname: e.target.value })}
+                          onChange = {e => {setUserData({ ...userData, lastname: e.target.value }); validateField(e.target.id, e.target.value)}}
                         ></Form.Control>
+                        <Form.Text className="text-danger">
+                          {(formValid == false) ? formErrors.lastname : null}
+                        </Form.Text>
                       </Form.Group>
                     </Col>
                   </Row>
@@ -107,12 +164,55 @@ function User() {
                       <Form.Group>
                         <label>Contact Number</label>
                         <Form.Control
+                          id="contactno"
                           defaultValue={userData.contactno}
                           placeholder="+94xxxxxxxxx"
                           type="text"
-                          onChange = {e => setUserData({ ...userData, contactno: e.target.value })}
+                          onChange = {e => {setUserData({ ...userData, contactno: e.target.value }); validateField(e.target.id, e.target.value)}}
                         ></Form.Control>
+                        <Form.Text className="text-danger">
+                          {(formValid == false) ? formErrors.contactno : null}
+                        </Form.Text>
                       </Form.Group>
+                    </Col>
+                    <Col className="pl-1" md="6">
+                    <Form.Group>
+                      <Form.Label>District</Form.Label>
+                      <Form.Control 
+                        id="district"
+                        as="select" 
+                        defaultValue={userData.district}
+                        onChange = {e => {setUserData({ ...userData, district: e.target.value }); validateField(e.target.id, e.target.value)}}>
+                        <option>Ampara</option>
+                        <option>Anuradhapura</option>
+                        <option>Badulla</option>
+                        <option>Batticaloa</option>
+                        <option>Colombo</option>
+                        <option>Galle</option>
+                        <option>Gampaha</option>
+                        <option>Hambantota</option>
+                        <option>Jaffna</option>
+                        <option>Kalutara</option>
+                        <option>Kandy</option>
+                        <option>Kegalle</option>
+                        <option>Kilinochchi</option>
+                        <option>Kurunegala</option>
+                        <option>Mannar</option>
+                        <option>Matale</option>
+                        <option>Matara</option>
+                        <option>Monaragala</option>
+                        <option>Mullaitivu</option>
+                        <option>Nuwara Eliya</option>
+                        <option>Polonnaruwa</option>
+                        <option>Puttalam</option>
+                        <option>Ratnapura</option>
+                        <option>Trincomalee</option>
+                        <option>Vavuniya</option>
+                      </Form.Control>
+                      <Form.Text className="text-danger">
+                          {(formValid == false) ? formErrors.district : null}
+                      </Form.Text>
+                    </Form.Group>
                     </Col>
                   </Row>
                   <hr></hr>
@@ -123,9 +223,9 @@ function User() {
                       <Form.Label>Vaccine</Form.Label>
                       <Form.Control 
                         as="select" 
-                        defaultValue="select vaccine"
+                        defaultValue={userData.vaccine ? userData.vaccine : 'Select Vaccine'}
                         onChange = {(e) => (e.target.value!= 'Select Vaccine') ? setUserData({ ...userData, vaccine: e.target.value }) : setUserData(userData)}>
-                        <option>{userData.vaccine ? userData.vaccine : 'Select Vaccine'}</option>
+                        { userData.vaccine ? (null) : (<option>'Select Vaccine'</option>)}
                         <option>Oxford-AstraZeneca-Covishield</option>
                         {/* <option>None</option> */}
                         {/* <option>4</option>
@@ -139,7 +239,7 @@ function User() {
                       <Form.Group>
                         <label>Dose 1</label>
                         <Form.Control
-                          defaultValue=""
+                          defaultValue={userData.vaccineDose1 ? userData.vaccineDose1 : ""}
                           placeholder="dose 1 date"
                           type="date"
                           disabled={userData.vaccine? false: true}
@@ -151,10 +251,10 @@ function User() {
                       <Form.Group>
                         <label>Dose 2</label>
                         <Form.Control
-                          defaultValue=""
+                          defaultValue={userData.vaccineDose2 ? userData.vaccineDose2 : ""}
                           placeholder="dose 2 date"
                           type="date"
-                          disabled={userData.vaccine? false: true}
+                          disabled={(userData.vaccine && userData.vaccineDose1) ? false: true}
                           onChange = {e => setUserData({ ...userData, vaccineDose2: e.target.value })}
                         ></Form.Control>
                       </Form.Group>
@@ -167,7 +267,7 @@ function User() {
                         <label>Notes</label>
                         <Form.Control
                           cols="80"
-                          defaultValue=""
+                          defaultValue={userData.notes? userData.notes : ""}
                           placeholder="Add notes"
                           rows="4"
                           as="textarea"
@@ -226,6 +326,7 @@ function User() {
                   </a>
                   <p className="description">Email : {defaultUserData.email}</p>
                   <p className="description">Contact Number : {defaultUserData.contactno}</p>
+                  <p className="description">District : {defaultUserData.district}</p>
                 </div>
                 <hr></hr>
                 {defaultUserData.vaccine ? (

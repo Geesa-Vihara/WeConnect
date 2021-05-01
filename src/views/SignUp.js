@@ -11,6 +11,7 @@ import {
     Container,
     Row,
     Col,
+    Alert
   } from "react-bootstrap";
 
 import { signUp } from "../actions/auth.js";
@@ -81,7 +82,7 @@ class SignUp extends Component{
     
       switch(fieldName) {
         case 'contactno':
-          vauleValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+          vauleValid = value.match(/^[+]94[0-9]{9}$/i);
           fieldValidationErrors.contactno = vauleValid ? null : ' invalid contact number (expected format : +94XXXXXXXXX)';
           break;
         case 'email':
@@ -140,7 +141,7 @@ class SignUp extends Component{
       if (this.state.isLoggedIn) return <Redirect to="/user" />;
         return(
     <Container>
-        <Row>
+        <Row className="justify-content-md-center">
           <Col md="6">
             <Card className="card-user">
             <div className="card-image">
@@ -176,7 +177,7 @@ class SignUp extends Component{
                           type="text"
                           onChange = {this.handleChange}
                         ></Form.Control>
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-danger">
                           {(this.state.formValid == false) ? this.state.formErrors.firstname : null}
                         </Form.Text>
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -194,7 +195,7 @@ class SignUp extends Component{
                           type="text"
                           onChange = {this.handleChange}
                         ></Form.Control>
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-danger">
                           {(this.state.formValid == false) ? this.state.formErrors.lastname : null}
                         </Form.Text>
                       </Form.Group>
@@ -211,7 +212,7 @@ class SignUp extends Component{
                           type="text"
                           onChange = {this.handleChange}
                         ></Form.Control>
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-danger">
                           {(this.state.formValid == false) ? this.state.formErrors.contactno : null}
                         </Form.Text>
                       </Form.Group>
@@ -253,7 +254,7 @@ class SignUp extends Component{
                         <option>Trincomalee</option>
                         <option>Vavuniya</option>
                       </Form.Control>
-                      <Form.Text className="text-muted">
+                      <Form.Text className="text-danger">
                           {(this.state.formValid == false) ? this.state.formErrors.district : null}
                         </Form.Text>
                     </Form.Group>
@@ -270,7 +271,7 @@ class SignUp extends Component{
                           type="email"
                           onChange = {this.handleChange}
                         ></Form.Control>
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-danger">
                           {(this.state.formValid == false) ? this.state.formErrors.email : null}
                         </Form.Text>
                       </Form.Group>
@@ -288,15 +289,22 @@ class SignUp extends Component{
                           type="password"
                           onChange = {this.handleChange}
                         ></Form.Control>
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-danger">
                           {(this.state.formValid == false) ? this.state.formErrors.password : null}
                         </Form.Text>
                       </Form.Group>
                     </Col>
                   </Row>
                   <Row>
-                    {this.state.error ? (<p>SIGNUP ERROR: {this.state.error}</p>): (<div></div>)}
+                  <Col className="pr-1" md="12">
+                    {this.state.error ? (
+                      <Alert variant='danger'>
+                        SIGNUP ERROR: {this.state.error}
+                      </Alert>
+                    ): (<div></div>)}
+                    </Col>
                   </Row>
+                  <Row className="justify-content-md-center">
                   <Button
                     className="btn-fill pull-right"
                     variant="info"
@@ -304,6 +312,7 @@ class SignUp extends Component{
                   >
                     SIGN UP
                   </Button>
+                  </Row>
                   <div className="clearfix"></div>
                 </Form>
               </Card.Body>
