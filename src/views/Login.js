@@ -11,6 +11,7 @@ import {
     Container,
     Row,
     Col,
+    Alert
   } from "react-bootstrap";
 
 import { login, getAuthStatus } from "../actions/auth.js";
@@ -21,7 +22,8 @@ class Login extends Component{
       email: "",
       password: "",
       isLoggedIn: false,
-      userType: null
+      userType: null,
+      error: null
     }
 
     constructor(props) {
@@ -73,6 +75,10 @@ class Login extends Component{
       status = await login(this.state);
       console.log(status)
       console.log("user", this.state.isLoggedIn)
+
+      if (status != true){
+        this.setState({error: status.message})
+      }
       
     };
 
@@ -81,7 +87,7 @@ class Login extends Component{
       if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin" />;
         return(
     <Container>
-        <Row>
+        <Row className="justify-content-md-center">
           <Col md="6">
             <Card className="card-user">
             <div className="card-image">
@@ -134,6 +140,16 @@ class Login extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
+                  <Row>
+                  <Col className="pr-1" md="12">
+                    {this.state.error ? (
+                      <Alert variant='danger'>
+                        LOGIN ERROR: {this.state.error}
+                      </Alert>
+                    ): (<div></div>)}
+                    </Col>
+                  </Row>
+                  <Row className="justify-content-md-center">
                   <Button
                     className="btn-fill pull-right"
                     variant="info"
@@ -148,8 +164,9 @@ class Login extends Component{
                   >
                     SIGN UP
                   </Button> */}
-                  <Row>
-                  <Col className="pr-1" md="12">
+                  </Row>
+                  <Row className='justify-content-center'>
+                  <Col className="pr-1" md="6">
                   <a href="#pablo" onClick={() => this.props.history.push("/signup")}>
                     Don't have an account? Sign Up
                   </a>

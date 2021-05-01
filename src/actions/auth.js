@@ -3,7 +3,7 @@ import Firebase, {db, provider} from '../firebase';
 export const login = async function login(credentials) {
     try {
         const response = await Firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);      
-        return response;  
+        return true;  
 
     } catch (error) {
         console.log('error', error);
