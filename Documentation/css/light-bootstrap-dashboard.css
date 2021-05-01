@@ -3001,3 +3001,10 @@ body > .navbar-collapse[data-color="purple"]:after {
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     -webkit-overflow-scrolling: touch; } }
+
+    .stat-text{
+      display: flex;
+      font-size: 10px;
+      align-items: center;
+      justify-content: center;
+    }
