@@ -3876,10 +3876,9 @@ License - nucleoapp.com/license/
 #bodyClick {
   position: absolute; }
 
-.logincard {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.authcontainer {
+  height: 100%;
+  background: yellow;
 }
 
 /*# sourceMappingURL=light-bootstrap-dashboard-react.css.map */
