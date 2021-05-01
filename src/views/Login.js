@@ -86,7 +86,7 @@ class Login extends Component{
       if (this.state.isLoggedIn && this.state.userType == 'user') return <Redirect to="/user/dashboard" />;
       if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin/dashboard" />;
         return(
-    <Container>
+    <Container fluid>
         <Row className="justify-content-md-center">
           <Col md="6">
             <Card className="card-user">
@@ -94,7 +94,7 @@ class Login extends Component{
                 <img
                   alt="..."
                   src={
-                    require("assets/img/photo-1431578500526-4d9613015464.jpeg")
+                    require("assets/img/new-blue-coronavirus-image.jpg")
                       .default
                   }
                 ></img>
@@ -112,8 +112,8 @@ class Login extends Component{
                     <h5 className="title">LOGIN</h5>
                 </div>
                 <Form>
-                  <Row>
-                    <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Email</label>
                         <Form.Control
@@ -126,8 +126,8 @@ class Login extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Password</label>
                         <Form.Control
@@ -140,8 +140,8 @@ class Login extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                  <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                  <Col className="pr-1" md="6">
                     {this.state.error ? (
                       <Alert variant='danger'>
                         LOGIN ERROR: {this.state.error}
@@ -152,25 +152,25 @@ class Login extends Component{
                   <Row className="justify-content-md-center">
                   <Button
                     className="btn-fill pull-right"
-                    variant="info"
+                    variant="primary"
                     onClick={this.handleSubmit}
                   >
                     LOGIN
                   </Button>
                   {/* <Button
                     className="btn-fill pull-right"
-                    variant="info"
+                    variant="primary"
                     onClick={() => this.props.history.push("/signup")}
                   >
                     SIGN UP
                   </Button> */}
                   </Row>
                   <Row className='justify-content-center'>
-                  <Col className="pr-1" md="6">
-                  <a href="#pablo" onClick={() => this.props.history.push("/signup")}>
+                  {/* <Col className="pr-1" md="4"> */}
+                  <a href="" onClick={() => this.props.history.push("/signup")}>
                     Don't have an account? Sign Up
                   </a>
-                  </Col>
+                  {/* </Col> */}
                   </Row>
                   <div className="clearfix"></div>
                 </Form>

@@ -140,7 +140,7 @@ class SignUp extends Component{
     render(){
       if (this.state.isLoggedIn) return <Redirect to="/user" />;
         return(
-    <Container>
+    <Container fluid>
         <Row className="justify-content-md-center">
           <Col md="6">
             <Card className="card-user">
@@ -148,7 +148,7 @@ class SignUp extends Component{
                 <img
                   alt="..."
                   src={
-                    require("assets/img/photo-1431578500526-4d9613015464.jpeg")
+                    require("assets/img/new-blue-coronavirus-image.jpg")
                       .default
                   }
                 ></img>
@@ -166,8 +166,8 @@ class SignUp extends Component{
                     <h5 className="title">SIGNUP</h5>
                 </div>
                 <Form>
-                <Row>
-                    <Col className="pr-1" md="12">
+                <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>First Name</label>
                         <Form.Control
@@ -184,8 +184,8 @@ class SignUp extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                  <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                  <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Last Name</label>
                         <Form.Control
@@ -201,8 +201,8 @@ class SignUp extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                  <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                  <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Contact Number</label>
                         <Form.Control
@@ -218,8 +218,8 @@ class SignUp extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col className="pr-l" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-l" md="6">
                     <Form.Group>
                       <Form.Label>District</Form.Label>
                       <Form.Control 
@@ -260,8 +260,8 @@ class SignUp extends Component{
                     </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Email</label>
                         <Form.Control
@@ -278,8 +278,8 @@ class SignUp extends Component{
                       {/* <p> </p> */}
                     </Col>
                   </Row>
-                  <Row>
-                    <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Password</label>
                         <Form.Control
@@ -295,8 +295,8 @@ class SignUp extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                  <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                  <Col className="pr-1" md="6">
                     {this.state.error ? (
                       <Alert variant='danger'>
                         SIGNUP ERROR: {this.state.error}
@@ -307,7 +307,7 @@ class SignUp extends Component{
                   <Row className="justify-content-md-center">
                   <Button
                     className="btn-fill pull-right"
-                    variant="info"
+                    variant="primary"
                     onClick={this.handleSubmit}
                   >
                     SIGN UP
