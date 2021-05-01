@@ -3,12 +3,12 @@ import Firebase, {db, provider} from '../firebase';
 export const login = async function login(credentials) {
     try {
         const response = await Firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);      
-        return response;  
+        return true;  
 
     } catch (error) {
         console.log('error', error);
-        alert(error)
-        return false;
+        // alert(error)
+        return error;
     }
 }
 
@@ -38,10 +38,11 @@ export const signUp = async function signUp(data) {
             await db.collection('users').doc(response.user.uid).set(user);
             // await db.collection('crowdcount').doc(response.user.uid).set(crowdcount);
         }
+        return true
     } catch (error) {
         console.log('error', error);
-        alert(error)
-        return false
+        // alert(error)
+        return error
     }
 }
 

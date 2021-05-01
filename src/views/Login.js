@@ -11,9 +11,11 @@ import {
     Container,
     Row,
     Col,
+    Alert
   } from "react-bootstrap";
 
 import { login, getAuthStatus } from "../actions/auth.js";
+import ParticlesBg from 'particles-bg'
 
 class Login extends Component{
 
@@ -21,7 +23,8 @@ class Login extends Component{
       email: "",
       password: "",
       isLoggedIn: false,
-      userType: null
+      userType: null,
+      error: null
     }
 
     constructor(props) {
@@ -73,22 +76,26 @@ class Login extends Component{
       status = await login(this.state);
       console.log(status)
       console.log("user", this.state.isLoggedIn)
+
+      if (status != true){
+        this.setState({error: status.message})
+      }
       
     };
 
     render(){
-      if (this.state.isLoggedIn && this.state.userType == 'user') return <Redirect to="/user" />;
-      if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin" />;
+      if (this.state.isLoggedIn && this.state.userType == 'user') return <Redirect to="/user/dashboard" />;
+      if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin/dashboard" />;
         return(
-    <Container>
-        <Row>
+    <Container fluid>
+        <Row className="justify-content-md-center">
           <Col md="6">
-            <Card className="card-user">
+            <Card className="card-user" style={{  margin: "100px auto 0",width:"75%"}}>
             <div className="card-image">
                 <img
                   alt="..."
                   src={
-                    require("assets/img/photo-1431578500526-4d9613015464.jpeg")
+                    require("assets/img/new-blue-coronavirus-image.jpg")
                       .default
                   }
                 ></img>
@@ -106,8 +113,8 @@ class Login extends Component{
                     <h5 className="title">LOGIN</h5>
                 </div>
                 <Form>
-                  <Row>
-                    <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Email</label>
                         <Form.Control
@@ -120,8 +127,8 @@ class Login extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col className="pr-1" md="12">
+                  <Row className="justify-content-md-center">
+                    <Col className="pr-1" md="6">
                       <Form.Group>
                         <label>Password</label>
                         <Form.Control
@@ -134,26 +141,37 @@ class Login extends Component{
                       </Form.Group>
                     </Col>
                   </Row>
+                  <Row className="justify-content-md-center">
+                  <Col className="pr-1" md="6">
+                    {this.state.error ? (
+                      <Alert variant='danger'>
+                        LOGIN ERROR: {this.state.error}
+                      </Alert>
+                    ): (<div></div>)}
+                    </Col>
+                  </Row>
+                  <Row className="justify-content-md-center">
                   <Button
                     className="btn-fill pull-right"
-                    variant="info"
+                    variant="primary"
                     onClick={this.handleSubmit}
                   >
                     LOGIN
                   </Button>
                   {/* <Button
                     className="btn-fill pull-right"
-                    variant="info"
+                    variant="primary"
                     onClick={() => this.props.history.push("/signup")}
                   >
                     SIGN UP
                   </Button> */}
-                  <Row>
-                  <Col className="pr-1" md="12">
-                  <a href="#pablo" onClick={() => this.props.history.push("/signup")}>
+                  </Row>
+                  <Row className='justify-content-center'>
+                  {/* <Col className="pr-1" md="4"> */}
+                  <a href="" onClick={() => this.props.history.push("/signup")}>
                     Don't have an account? Sign Up
                   </a>
-                  </Col>
+                  {/* </Col> */}
                   </Row>
                   <div className="clearfix"></div>
                 </Form>
@@ -161,7 +179,8 @@ class Login extends Component{
             </Card>
           </Col>
         </Row>
-      </Container>
+        <ParticlesBg type="cobweb" bg={true} color="#00293b" num={150}/>
+        </Container>
         )
     }
 }
