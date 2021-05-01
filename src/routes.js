@@ -8,6 +8,7 @@ import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Upgrade from "views/Upgrade.js";
 import Faq from "views/Faq";
+import ChatUser from "views/ChatUser";
 
 const dashboardRoutes = [
   // {
@@ -23,6 +24,13 @@ const dashboardRoutes = [
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/maps",
+    name: "Maps",
+    icon: "nc-icon nc-pin-3",
+    component: Maps,
     layout: "/admin",
   },
   {
@@ -54,10 +62,10 @@ const dashboardRoutes = [
   //   layout: "/admin",
   // },
   {
-    path: "/notifications",
-    name: "Chats",
+    path: "/chat",
+    name: "Chat Room",
     icon: "nc-icon nc-bell-55",
-    component: Notifications,
+    component: ChatUser,
     layout: "/admin",
   },
   {
