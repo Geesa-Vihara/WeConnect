@@ -7,8 +7,8 @@ export const login = async function login(credentials) {
 
     } catch (error) {
         console.log('error', error);
-        alert(error)
-        return false;
+        // alert(error)
+        return error;
     }
 }
 
@@ -38,10 +38,11 @@ export const signUp = async function signUp(data) {
             await db.collection('users').doc(response.user.uid).set(user);
             // await db.collection('crowdcount').doc(response.user.uid).set(crowdcount);
         }
+        return true
     } catch (error) {
         console.log('error', error);
-        alert(error)
-        return false
+        // alert(error)
+        return error
     }
 }
 
