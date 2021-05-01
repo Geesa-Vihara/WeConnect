@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
+import Announcement from "views/Announcement.js";
 import Profile from "views/Profile"
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
@@ -41,10 +42,10 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/table",
+    path: "/announcement",
     name: "Announcements",
     icon: "nc-icon nc-notes",
-    component: TableList,
+    component: Announcement,
     layout: "/admin",
   },
   // {
