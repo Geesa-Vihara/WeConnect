@@ -15,6 +15,7 @@ import {
   } from "react-bootstrap";
 
 import { signUp } from "../actions/auth.js";
+import ParticlesBg from 'particles-bg'
 
 class SignUp extends Component{
 
@@ -143,7 +144,7 @@ class SignUp extends Component{
     <Container fluid>
         <Row className="justify-content-md-center">
           <Col md="6">
-            <Card className="card-user">
+            <Card className="card-user" style={{  margin: "100px auto 0",width:"75%"}}>
             <div className="card-image">
                 <img
                   alt="..."
@@ -227,7 +228,7 @@ class SignUp extends Component{
                         as="select" 
                         defaultValue="select vaccine"
                         onChange = {this.handleChange}>
-                        <option>Select your district to get nearby announcements</option>
+                        <option>Select your district</option>
                         <option>Ampara</option>
                         <option>Anuradhapura</option>
                         <option>Badulla</option>
@@ -319,6 +320,7 @@ class SignUp extends Component{
             </Card>
           </Col>
         </Row>
+        <ParticlesBg type="cobweb" bg={true} color="#00293b" num={150} />
       </Container>
         )
     }

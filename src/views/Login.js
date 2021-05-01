@@ -15,6 +15,7 @@ import {
   } from "react-bootstrap";
 
 import { login, getAuthStatus } from "../actions/auth.js";
+import ParticlesBg from 'particles-bg'
 
 class Login extends Component{
 
@@ -89,7 +90,7 @@ class Login extends Component{
     <Container fluid>
         <Row className="justify-content-md-center">
           <Col md="6">
-            <Card className="card-user">
+            <Card className="card-user" style={{  margin: "100px auto 0",width:"75%"}}>
             <div className="card-image">
                 <img
                   alt="..."
@@ -178,7 +179,8 @@ class Login extends Component{
             </Card>
           </Col>
         </Row>
-      </Container>
+        <ParticlesBg type="cobweb" bg={true} color="#00293b" num={150}/>
+        </Container>
         )
     }
 }
