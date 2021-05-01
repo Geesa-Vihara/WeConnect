@@ -83,8 +83,8 @@ class Login extends Component{
     };
 
     render(){
-      if (this.state.isLoggedIn && this.state.userType == 'user') return <Redirect to="/user" />;
-      if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin" />;
+      if (this.state.isLoggedIn && this.state.userType == 'user') return <Redirect to="/user/dashboard" />;
+      if (this.state.isLoggedIn && this.state.userType == 'admin') return <Redirect to="/admin/dashboard" />;
         return(
     <Container>
         <Row className="justify-content-md-center">
