@@ -22,6 +22,7 @@ import {
   DropdownButton,
   Form,
 } from "react-bootstrap";
+import axios from "axios";
 
 
  
@@ -32,7 +33,7 @@ class Announcement extends Component{
     startDate : new Date,
     district : 'Colombo',
     division : 'Pirivena Road',
-    location : 'https://goo.gl/maps/3fHagji6ZhW8Sr6X8',
+    location : 'https://goo.gl/maps/A9a5JeczpxCCZWW67',
     description : '',
     age : 60,
     isPregnant: false,
@@ -50,7 +51,7 @@ class Announcement extends Component{
     await db.collection("announcements").get().then((querySnapshot) => {
       let announcementList = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
+          //console.log(doc.id, " => ", doc.data());
 
           let post ={
             Id : doc.id,
@@ -60,9 +61,9 @@ class Announcement extends Component{
           announcementList.push(post);
 
         });
-        announcementList.filter(obj => {
-          console.log(obj.Id);
-        })
+        // announcementList.filter(obj => {
+        //   console.log(obj.Id);
+        // })
 
         // this.setState({announcementsList: announcementList});
         this.setState(({
@@ -72,9 +73,14 @@ class Announcement extends Component{
             console.log("Error getting documents: ", error);
         });
         console.log(this.state.announcementsList+"dzhjnhashini");
-        this.state.announcementsList.filter(obj => {
-          console.log(obj.Id);
-        })
+        // this.state.announcementsList.filter(obj => {
+        //   console.log(obj.Id);
+        // })
+        console.log(this.state.announcementsList.length)
+        // this.state.announcementsList[0].map((data,i) => {
+        //   console.log(data.description);
+        // })
+
   }
  
   announcement=async(e)=> {
@@ -93,10 +99,16 @@ class Announcement extends Component{
             await db.collection('announcements').add(announcement);
             console.log('announcement------');
 
-            db.collection("users").where("district", "==", this.state.district).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
+            await db.collection("users").where("district", "==", this.state.district).get().then((querySnapshot) => {
+            querySnapshot.forEach(async(doc) => {
             // doc.data() is never undefined for query doc snapshots
               console.log(doc.id, " => ", doc.data());
+              const msg={
+                from_number : "",
+                to_number :doc.data().contactno,
+                message_body: `Hi ${doc.data().firstname}\n`+this.state.description
+              }
+              await axios.post(`http://127.0.0.1:5000/sms`,msg).then(res=>console.log(res)).catch(err=>console.log(err));
             });
             }).catch((error) => {
                 console.log("Error getting documents: ", error);
@@ -110,7 +122,18 @@ class Announcement extends Component{
         alert(error)
         return false
     }
-    this.messageForm.reset();
+    //this.messageForm.reset();
+    this.setState({
+      startDate : new Date,
+      district : 'Colombo',
+      division : 'Pirivena Road',
+      location : 'https://goo.gl/maps/A9a5JeczpxCCZWW67',
+      description : '',
+      age : 60,
+      isPregnant: false,
+      isBreastFeeding: false,
+      isAllergic: false,
+    })
   }
 
   handleDateChange = e => {
@@ -346,14 +369,13 @@ class Announcement extends Component{
                   </thead>
 
                   <tbody>
-            {this.state.announcementsList.map((data,i) => {
-                    console.log(this.state.announcementsList+data+"test");
+            {this.state.announcementsList[0] && this.state.announcementsList[0].map((data,i) => {
                 return (
                             
                   <tr key={i}>     
                      {/* <td>{data.Id}</td> */}
-                      {/* <td>{data[i].createdAt}</td> */}
-                      <td>{data[i].description}</td>     
+                      <td>{Date(data.createdAt)}</td>
+                      <td>{data.description}</td>     
                   </tr>  
             
                 );

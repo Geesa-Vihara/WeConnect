@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import firebase from 'firebase';
+import Firebase, {db, provider} from '../../firebase';
+
+const auth = Firebase.auth();
 
 class Post extends Component {
   constructor(props) {
@@ -10,7 +14,7 @@ class Post extends Component {
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
     var today = new Date(),
     date = today.getDate()+ '/' + (today.getMonth() + 1) + '/' + today.getFullYear() ;
     const userObject = {
@@ -24,13 +28,20 @@ class Post extends Component {
       gender:this.state.gender.value,
       test_indication:this.state.test_indication.value,
     };
-    axios.post(`https://weconnect-ampersand.herokuapp.com/predict`, userObject).then(res => {
+    await axios.post(`https://weconnect-ampersand.herokuapp.com/predict`, userObject).then(async(res) => {
         var message=''
         if(res.status==200 && res.data.length!=0){
             if(res.data.prediction=='negative'){
                 message='You were tested negative for COVID-19. Still make sure to follow the health and safety guidelines appropriately.'
             }else{
                 message='You were tested positive for COVID-19. A health provider will contact you soon...'
+                const {uid} = auth.currentUser;
+                const msg={
+                  text: "A health provider will be in touch with you soon...",
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                  uid:"0"
+                }
+                await db.collection('chats').add(msg);
             }
             this.setState({message_body:message})
         }

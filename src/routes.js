@@ -2,7 +2,6 @@ import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
 import Announcement from "views/Announcement.js";
 import Profile from "views/Profile"
-import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
@@ -10,6 +9,7 @@ import Notifications from "views/Notifications.js";
 import Upgrade from "views/Upgrade.js";
 import Faq from "views/Faq";
 import ChatUser from "views/ChatUser";
+import CovidDashboard from "views/CovidDashboard.js";
 
 const dashboardRoutes = [
   // {
@@ -24,7 +24,7 @@ const dashboardRoutes = [
     path: "/dashboard",
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
-    component: Dashboard,
+    component: CovidDashboard,
     layout: "/admin",
   },
   {
